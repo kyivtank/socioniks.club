@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo '=== DNS Update ==='
                 sh("uptime")
-		sh 'curl -X GET -H"Authorization: sso-key $GD_API_KEY:$GD_API_SECRET" "https://api.godaddy.com/v1/domains/socioniks.club/records/A/@" |jq'
+		sh 'curl -X GET -H"Authorization: sso-key $GD_API_KEY:$GD_API_SECRET" "https://api.godaddy.com/v1/domains/socioniks.club/records/A/@"'
             }
         }
     }
