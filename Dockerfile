@@ -1,8 +1,5 @@
 FROM jenkins/jenkins:alpine
 
-ENV JENKINS_USER admin
-ENV JENKINS_PASS cheburashka
-
 # Skip initial setup
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 
