@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo '=== AWS EC2 ==='
                 sh 'uptime' 
-		sh 'aws ec2 describe-instances --region eu-central'
+		sh 'aws ec2 describe-instances --region eu-central-1'
             }
         }
         stage('Register DNS Name') {
