@@ -31,11 +31,11 @@ pipeline {
 		sh './update_godaddy_dns.sh'
             }
         }
-	Stage('Setup the Server') {
-	    steps {
+        stage('Setup the Server') {
+            steps {
                 echo '=== Try ssh ==='
-		withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'aws2020', keyFileVariable: 'private_key')]){
-                 sh "ssh -i $private_key -o StrictHostKeyChecking=no ubuntu@$GD_DOMAIN uptimei"
+                withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'aws2020', keyFileVariable: 'private_key')]){
+                  sh "ssh -i $private_key -o StrictHostKeyChecking=no ubuntu@$GD_DOMAIN uptimei"
                 }
 	    }
 	}
