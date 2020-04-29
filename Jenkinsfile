@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Register IP for DNS Name') {
             steps {
-                echo '=== $GD_DOMAIN A record update ==='
+                echo '=== DNS A record update ==='
 		sh './update_godaddy_dns.sh'
             }
         }
