@@ -6,7 +6,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
-        AWS_REGION = 'eu-central-1'
+        AWS_DEFAULT_REGION = 'eu-central-1'
         GD_DOMAIN = 'socioniks.club'
 	GD_API_KEY = credentials ('jenkins-godaddy-key')
         GD_API_SECRET = credentials('jenkins-godaddy-secret')
