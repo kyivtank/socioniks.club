@@ -1,6 +1,3 @@
-variable "region" {
-}
-
 variable "environment" {
 }
 
@@ -19,7 +16,6 @@ terraform {
 }
 
 provider "aws" {
-  region                  = var.region
 }
 
 data "aws_ami" "ubuntu" {
