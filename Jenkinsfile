@@ -7,6 +7,7 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
         AWS_DEFAULT_REGION = 'eu-central-1'
+        AWS_DEFAULT_OUTPUT = 'table'
         GD_DOMAIN = 'socioniks.club'
 	GD_API_KEY = credentials ('jenkins-godaddy-key')
         GD_API_SECRET = credentials('jenkins-godaddy-secret')
@@ -27,7 +28,9 @@ pipeline {
         stage('Register IP for DNS Name') {
             steps {
                 echo '=== $GD_DOMAIN A record update ==='
-		sh 'update_godaddy_dns.sh'
+                dir("${env.WORKSPACE}") {
+		 sh 'update_godaddy_dns.sh'
+		}
             }
         }
     }
