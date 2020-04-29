@@ -19,7 +19,7 @@ pipeline {
                 dir("${env.WORKSPACE}/terraform") {
                  wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
                   sh "terraform init"
-                  sh "terraform apply -auto-approve|tee -a terraform.out"
+                  sh "terraform apply -auto-approve|tee terraform.out"
                  }
 		 sh 'aws ec2 describe-instances'
                 }
