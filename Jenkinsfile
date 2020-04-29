@@ -6,8 +6,8 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
-        AWS_REGION = "eu-central-1"
-        GD_DOMAIN = "socioniks.club"
+        AWS_REGION = 'eu-central-1'
+        GD_DOMAIN = 'socioniks.club'
 	GD_API_KEY = credentials ('jenkins-godaddy-key')
         GD_API_SECRET = credentials('jenkins-godaddy-secret')
     }
@@ -16,15 +16,17 @@ pipeline {
             steps {
                 echo '=== AWS EC2 ==='
                 dir("${env.WORKSPACE}/terraform") {
-                 sh "terraform init"
-                 sh "terraform apply -auto-approve|tee -a terraform.out"
+                 wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
+                  sh "terraform init"
+                  sh "terraform apply -auto-approve|tee -a terraform.out"
+                 }
+		 sh 'aws ec2 describe-instances'
                 }
-		sh 'aws ec2 describe-instances'
             }
         }
-        stage('Register DNS Name') {
+        stage('Register IP for DNS Name') {
             steps {
-                echo '=== DNS Current state ==='
+                echo '=== $GD_DOMAIN A record update ==='
 		sh 'update_godaddy_dns.sh'
             }
         }
