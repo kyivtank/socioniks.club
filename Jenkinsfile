@@ -11,7 +11,8 @@ pipeline {
         GD_DOMAIN = 'socioniks.club'
 	GD_API_KEY = credentials ('jenkins-godaddy-key')
         GD_API_SECRET = credentials('jenkins-godaddy-secret')
-        ANSIBLE_HOST_KEY_CHECKING = 'False'
+        ANSIBLE_HOST_KEY_CHECKING = 'false'
+        ANSIBLE_FORCE_COLOR = 'true'
     }
     stages {
         stage('Terraform') { 
@@ -38,7 +39,7 @@ pipeline {
                 wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
                  withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'aws2020', keyFileVariable: 'private_key')]){
                   sh "ssh -i $private_key -o StrictHostKeyChecking=no ubuntu@$GD_DOMAIN uptime"
-                  sh "ansible-playbook --force-color --private-key $private_key -i ansible/inventory/socioniks.club ansible/setup_wordpress.yml"
+                  sh "ansible-playbook --private-key $private_key -i ansible/inventory/socioniks.club ansible/setup_wordpress.yml"
                  }
                 }
 	    }
