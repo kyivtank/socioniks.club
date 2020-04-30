@@ -7,8 +7,8 @@
     - php-enchant
     - php-mbstring
     - php-mysql
-    - php-simplepie
     - php-xml
+    - libphp-simplepie
     state: latest
 
 - name: Tweak PHP post_max_size
