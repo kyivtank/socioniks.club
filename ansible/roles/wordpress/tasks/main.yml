@@ -10,8 +10,7 @@
     name: "{{ wp_db_name }}"
     state: present
     config_file: '/etc/my.cnf'
-    login_host: 'localhost'
-    login_user: mysql
+    login_user: root
     login_password: ""
 
 - name: Create WordPress database user
@@ -20,8 +19,8 @@
     password: "{{ wp_db_password }}"
     priv: "{{ wp_db_name }}.*:ALL"
     state: present
-    login_host: 'localhost'
-    login_user: mysql
+    config_file: '/etc/my.cnf'
+    login_user: root
     login_password: ""
 
 - name: Remove WordPress installation
