@@ -30,7 +30,9 @@ pipeline {
         stage('GoDaddy') {
             steps {
                 echo '=== DNS A record update ==='
-		sh './update_godaddy_dns.sh'
+                wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
+                 sh './update_godaddy_dns.sh'
+                }
             }
         }
         stage('Ansible') {
