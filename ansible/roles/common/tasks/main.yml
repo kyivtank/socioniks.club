@@ -1,14 +1,14 @@
 ---
 - name: Set History format
   lineinfile:
-   dest: /etc/bashrc
+   dest: /etc/bash.bashrc 
    state: present
    regexp: '^HISTTIMEFORMAT='
    line: 'HISTTIMEFORMAT="%Y-%m-%d %T "'
 
 - name: Set History size
   lineinfile:
-   dest: /etc/bashrc
+   dest: /etc/bash.bashrc
    state: present
    regexp: '^HISTSIZE='
    line: 'HISTSIZE=20000'
