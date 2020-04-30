@@ -38,7 +38,7 @@ pipeline {
                 wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
                  withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'aws2020', keyFileVariable: 'private_key')]){
                   sh "ssh -i $private_key -o StrictHostKeyChecking=no ubuntu@$GD_DOMAIN uptime"
-                  sh "ansible-playbook --private-key $private_key -i ansible/inventory/socioniks.club ansible/setup_wordpress.yml"
+                  sh "ansible-playbook --force-color --private-key $private_key -i ansible/inventory/socioniks.club ansible/setup_wordpress.yml"
                  }
                 }
 	    }

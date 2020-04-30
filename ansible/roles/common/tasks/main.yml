@@ -45,4 +45,5 @@
     - mlocate
     - sysstat
     - mc
+    - python3-pymysql
     state: latest
