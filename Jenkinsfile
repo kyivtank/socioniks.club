@@ -36,6 +36,7 @@ pipeline {
                 echo '=== Try ssh ==='
                 withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'aws2020', keyFileVariable: 'private_key')]){
                   sh "ssh -i $private_key -o StrictHostKeyChecking=no ubuntu@$GD_DOMAIN uptime"
+                  sh "ansible-playbook -i ansible/inventory/socioniks.club ansible/setup_wordpress.yml"
                 }
 	    }
 	}
