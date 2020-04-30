@@ -40,8 +40,9 @@
    line: '/swapfile  none        swap    swap              0   0'
 
 - name: Install additional packet
-  yum: name={{ item }} state=present
-  with_items:
+  apt: 
+    name:
     - mlocate
     - sysstat
     - mc
+    state: latest

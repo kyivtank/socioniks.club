@@ -1,11 +1,11 @@
 ---
 - name: Install Apache
-  yum: name={{ item }} state=present
-  with_items:
-    - httpd
-    - mod_ssl
-    - mod_php
-    - mod_geoip
+  apt:
+    name:
+    - apache2
+    - libapache2-mod-php
+    - libapache2-mod-geoip
+    state: latest
 
 - name: Copy apache main configuration file
   template: src=httpd.conf dest=/etc/httpd/conf/httpd.conf

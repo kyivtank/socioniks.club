@@ -1,7 +1,7 @@
 ---
 - name: Install php and deps
-  yum: name={{ item }} state=present
-  with_items:
+  apt:
+    name:
     - php
     - php-gd
     - php-enchant
@@ -9,6 +9,7 @@
     - php-mysql
     - php-simplepie
     - php-xml
+    state: latest
 
 - name: Tweak PHP post_max_size
   ini_file:

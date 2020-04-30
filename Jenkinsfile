@@ -14,7 +14,7 @@ pipeline {
         ANSIBLE_HOST_KEY_CHECKING = 'False'
     }
     stages {
-        stage('Make AWS EC2 instance') { 
+        stage('Terraform') { 
             steps {
                 echo '=== AWS EC2 ==='
                 dir("${env.WORKSPACE}/terraform") {
@@ -26,13 +26,13 @@ pipeline {
                 }
             }
         }
-        stage('Register IP for DNS Name') {
+        stage('GoDaddy') {
             steps {
                 echo '=== DNS A record update ==='
 		sh './update_godaddy_dns.sh'
             }
         }
-        stage('Setup the Server') {
+        stage('Ansible') {
             steps {
                 echo '=== Try ssh ==='
                 withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'aws2020', keyFileVariable: 'private_key')]){
