@@ -8,24 +8,23 @@
     state: latest
 
 - name: Copy apache main configuration file
-  template: src=httpd.conf dest=/etc/httpd/conf/httpd.conf
+  template: 
+    src: httpd.conf 
+    dest: /etc/apache2/apache2.conf
   notify: restart apache
 
 - name: Copy apache configuration for wordpress
-  template: src=default.conf dest=/etc/httpd/conf.d/default.conf
+  template: 
+    src: default.conf
+    dest: /etc/apache2/sites-available/000-default.conf
   notify: restart apache
 
 - name: Copy apache MPM configuration
-  template: src=default.conf dest=/etc/httpd/conf.d/default.conf
+  file:
+    src: /etc/apache2/sites-available/000-default.conf 
+    dest: /etc/apache2/sites-enabled/000-default.conf
+    state: link
   notify: restart apache
-
-- name: insert firewalld rule for apache
-  firewalld: port={{ apache_port }}/tcp permanent=true state=enabled immediate=yes
-  ignore_errors: yes
-
-- name: insert firewalld rule for apache
-  firewalld: port={{ apache_ssl_port }}/tcp permanent=true state=enabled immediate=yes
-  ignore_errors: yes
 
 - name: Alternative web folder (for bot attack)
   file:
