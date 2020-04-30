@@ -1,0 +1,65 @@
+---
+- name: download wp-cli
+  get_url: url=https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar dest=/usr/local/bin/wp
+
+- name: update permissions of wp-cli to allow anyone to execute it
+  file: path=/usr/local/bin/wp mode="0755"
+
+- name: Create WordPress database
+  mysql_db: name={{ wp_db_name }} state=present
+
+- name: Create WordPress database user
+  mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
+
+- name: Remove WordPress installation
+  file: path={{ wp_site_dir }} state=absent 
+
+- name: Remove WordPress installation
+  file: path={{ wp_site_dir }} state=directory recurse=yes
+
+- name: Download wordpress
+  command: "wp core download --allow-root --path={{ wp_site_dir }}"
+
+- name: Configure wordpress
+  command: "wp core config --allow-root --path={{ wp_site_dir }} --dbuser={{ wp_db_user }} --dbname={{ wp_db_name }} --dbpass={{ wp_db_password }}"
+
+- name: Install wordpress
+  command: "wp core install --allow-root --path={{ wp_site_dir }} --url={{ wp_site_url }} --title='{{ wp_site_title }}' --admin_user={{ wp_admin_user }} --admin_email={{ wp_admin_email }} --admin_password={{ wp_admin_password }}"
+
+- name: Delete Hello Dolly plugin
+  command: wp plugin delete hello --allow-root --path={{ wp_site_dir }}
+  ignore_errors: yes
+
+- name: Delete Akismet plugin
+  command: wp plugin delete akismet --allow-root --path={{ wp_site_dir }}
+  ignore_errors: yes
+
+- name: Change ownership of WordPress installation
+  file: path={{ wp_site_dir }} owner={{ wp_os_user }} group={{ wp_os_group }} mode=775 state=directory recurse=yes
+
+- name: Change upload permissions
+  file: path={{ wp_site_dir }}/wp-content/uploads owner={{ wp_os_user }} group={{ wp_os_group }} mode=775 state=directory recurse=yes
+
+- name: Install WordPress plugins
+  command: wp plugin install {{ item.name }} --allow-root --activate --force --path={{ wp_site_dir }} --quiet
+  with_items: "{{ wp_plugins }}"
+  when: wp_plugins is defined
+  ignore_errors: yes
+
+- name: Replace site URL in database
+  command: "wp option update siteurl {{ wp_site_protocol }}://{{ wp_site_url }} --allow-root --path={{ wp_site_dir }}"
+  ignore_errors: yes
+
+- name: Replace home URL in database
+  command: "wp option update home {{ wp_site_protocol }}://{{ wp_site_url }} --allow-root --path={{ wp_site_dir }}"
+  ignore_errors: yes
+
+- name: Change ownership of WordPress installation
+  file: path={{ wp_site_dir }} owner={{ wp_os_user }} group={{ wp_os_group }} mode=775 state=directory recurse=yes
+
+- name: Add .htaccess with permalinks and Wordfence settings
+  template: src=htaccess dest=/var/www/html/.htaccess
+
+- name: Start Apache Service
+  service: name={{ wp_apache }} state=restarted enabled=yes
+

@@ -1,0 +1,39 @@
+---
+- name: Install php and deps
+  yum: name={{ item }} state=present
+  with_items:
+    - php
+    - php-gd
+    - php-enchant
+    - php-mbstring
+    - php-mysql
+    - php-simplepie
+    - php-xml
+
+- name: Tweak PHP post_max_size
+  ini_file:
+    dest: /etc/php.ini 
+    section: PHP
+    option: post_max_size
+    value: "{{ php_post_max_size }}"
+    mode: 0644
+    backup: yes
+
+- name: Tweak PHP post_max_size
+  ini_file:
+    dest: /etc/php.ini
+    section: PHP
+    option: memory_limit
+    value: "{{ php_memory_limit }}"
+    mode: 0644
+    backup: yes
+
+- name: Tweak PHP upload_max_filesize
+  ini_file:
+    dest: /etc/php.ini
+    section: PHP
+    option: upload_max_filesize 
+    value: "{{ php_upload_max_filesize }}"
+    mode: 0644
+    backup: yes
+

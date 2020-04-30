@@ -1,0 +1,40 @@
+---
+- name: Install Apache
+  yum: name={{ item }} state=present
+  with_items:
+    - httpd
+    - mod_ssl
+    - mod_php
+    - mod_geoip
+
+- name: Copy apache main configuration file
+  template: src=httpd.conf dest=/etc/httpd/conf/httpd.conf
+  notify: restart apache
+
+- name: Copy apache configuration for wordpress
+  template: src=default.conf dest=/etc/httpd/conf.d/default.conf
+  notify: restart apache
+
+- name: Copy apache MPM configuration
+  template: src=default.conf dest=/etc/httpd/conf.d/default.conf
+  notify: restart apache
+
+- name: insert firewalld rule for apache
+  firewalld: port={{ apache_port }}/tcp permanent=true state=enabled immediate=yes
+  ignore_errors: yes
+
+- name: insert firewalld rule for apache
+  firewalld: port={{ apache_ssl_port }}/tcp permanent=true state=enabled immediate=yes
+  ignore_errors: yes
+
+- name: Alternative web folder (for bot attack)
+  file:
+    path: /var/www/html2
+    state: directory
+    mode: 0755
+
+- name: Copy IP page index file
+  template: src=index2.html dest=/var/www/html2/index.html
+
+- name: http service state
+  service: name={{ wp_apache }} state=started enabled=yes

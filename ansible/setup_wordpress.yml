@@ -1,0 +1,13 @@
+---
+- name: Install WordPress, MariaDB, Apache, and PHP
+  hosts: wordpress-server
+  remote_user: root
+  # remote_user: user
+  # sudo: yes
+
+  roles:
+    - common
+    - mariadb
+    - apache
+    - php
+    - wordpress

@@ -1,0 +1,47 @@
+---
+- name: Set History format
+  lineinfile:
+   dest: /etc/bashrc
+   state: present
+   regexp: '^HISTTIMEFORMAT='
+   line: 'HISTTIMEFORMAT="%Y-%m-%d %T "'
+
+- name: Set History size
+  lineinfile:
+   dest: /etc/bashrc
+   state: present
+   regexp: '^HISTSIZE='
+   line: 'HISTSIZE=20000'
+
+- name: Check swapfile
+  stat:
+   path: /swapfile
+   get_md5: no
+  register: swap
+  failed_when: false
+
+- name: Create 2GB swap file
+  command: "dd if=/dev/zero of=/swapfile bs=512k count=4k"
+  when: swap.stat is not defined
+  
+- name: Format swap file
+  command: "mkswap /swapfile"
+  when: swap.stat is not defined
+
+- name: Enable swap file
+  command: "swapon /swapfile"
+  when: swap.stat is not defined
+
+- name: Set swapfile permanent
+  lineinfile:
+   dest: /etc/fstab
+   state: present
+   regexp: '^/swapfile'
+   line: '/swapfile  none        swap    swap              0   0'
+
+- name: Install additional packet
+  yum: name={{ item }} state=present
+  with_items:
+    - mlocate
+    - sysstat
+    - mc
