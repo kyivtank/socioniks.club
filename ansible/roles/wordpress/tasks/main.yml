@@ -10,8 +10,8 @@
     name: "{{ wp_db_name }}"
     state: present
     config_file: '/etc/my.cnf'
-    login_user: root
-    login_password: ""
+    login_unix_socket: /var/lib/mysql/mysql.sock
+    login_user: mysql
 
 - name: Create WordPress database user
   mysql_user:
@@ -20,8 +20,8 @@
     priv: "{{ wp_db_name }}.*:ALL"
     state: present
     config_file: '/etc/my.cnf'
-    login_user: root
-    login_password: ""
+    login_unix_socket: /var/lib/mysql/mysql.sock
+    login_user: mysql
 
 - name: Remove WordPress installation
   file: path={{ wp_site_dir }} state=absent 
