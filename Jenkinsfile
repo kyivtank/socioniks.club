@@ -11,6 +11,7 @@ pipeline {
         GD_DOMAIN = 'socioniks.club'
 	GD_API_KEY = credentials ('jenkins-godaddy-key')
         GD_API_SECRET = credentials('jenkins-godaddy-secret')
+        ANSIBLE_HOST_KEY_CHECKING=False
     }
     stages {
         stage('Make AWS EC2 instance') { 
