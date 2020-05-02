@@ -47,3 +47,4 @@
     - mc
     - python3-pymysql
     state: latest
+    update_cache: yes
