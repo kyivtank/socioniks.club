@@ -9,9 +9,7 @@
   mysql_db:
     name: "{{ wp_db_name }}"
     state: present
-    config_file: '/etc/my.cnf'
-    login_unix_socket: /var/lib/mysql/mysql.sock
-    login_user: mysql
+    login_unix_socket: /var/run/mysqld/mysqld.sock
 
 - name: Create WordPress database user
   mysql_user:
@@ -19,9 +17,7 @@
     password: "{{ wp_db_password }}"
     priv: "{{ wp_db_name }}.*:ALL"
     state: present
-    config_file: '/etc/my.cnf'
-    login_unix_socket: /var/lib/mysql/mysql.sock
-    login_user: mysql
+    login_unix_socket: /var/run/mysqld/mysqld.sock
 
 - name: Remove WordPress installation
   file: path={{ wp_site_dir }} state=absent 
@@ -46,6 +42,12 @@
   command: wp plugin delete akismet --allow-root --path={{ wp_site_dir }}
   ignore_errors: yes
 
+- name: Add wordfence waf file
+  template: src=wordfence-waf.php dest=/var/www/html/wordfence-waf.php
+
+- name: Add .htaccess with permalinks and Wordfence settings
+  template: src=htaccess dest=/var/www/html/.htaccess
+
 - name: Change ownership of WordPress installation
   file: path={{ wp_site_dir }} owner={{ wp_os_user }} group={{ wp_os_group }} mode=775 state=directory recurse=yes
 
@@ -68,9 +70,6 @@
 
 - name: Change ownership of WordPress installation
   file: path={{ wp_site_dir }} owner={{ wp_os_user }} group={{ wp_os_group }} mode=775 state=directory recurse=yes
-
-- name: Add .htaccess with permalinks and Wordfence settings
-  template: src=htaccess dest=/var/www/html/.htaccess
 
 - name: Start Apache Service
   service: name={{ wp_apache }} state=restarted enabled=yes
