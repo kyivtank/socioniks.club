@@ -13,7 +13,7 @@ curl --silent -X GET -H"Authorization: sso-key $GODADDY_API_KEY:$GODADDY_API_SEC
 
 if ! diff after.txt before.txt; 
  then 
-  echo DNS Updated.. Waiting for 2 minutes
-  sleep 120
+  echo DNS Updated.. Waiting for 3 minutes
+  sleep 180
  fi
 
