@@ -1,10 +1,12 @@
 # socioniks.club
-Test project. To test bunch of technolgies. Docker, Docker hub, 
+Test project. To test bunch of technolgies. Docker, Docker hub, terraform, ansible, Jenkins with pipelines
+
 1. Create Jenkins docker image with all needed plugins and tools
 1. Set up autobuild of docker images on Docker Hub
 1. Create AWS ec2 instance amd security group using terraform
 1. Update DNS using GoDaddy API
 1. Setup wordpress server using ansible and wp-cli
+1. get let's encrypt ssl certificates and schedule renewal
 
 
 To Reproduce you need:
