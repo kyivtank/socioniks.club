@@ -9,7 +9,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'eu-central-1'
         AWS_DEFAULT_OUTPUT = 'table'
         GD_DOMAIN = 'socioniks.club'
-	GODADDY_API_KEY= = credentials ('jenkins-godaddy-key')
+	GODADDY_API_KEY = credentials ('jenkins-godaddy-key')
         GODADDY_API_SECRET = credentials('jenkins-godaddy-secret')
         ANSIBLE_HOST_KEY_CHECKING = 'false'
         ANSIBLE_FORCE_COLOR = 'true'
