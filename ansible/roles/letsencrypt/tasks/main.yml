@@ -1,4 +1,7 @@
 ---
+- name: restart apache
+  service: name={{ wp_apache }} state=stopped
+
 - name: Get Let's Encrypt Certificates
   shell: "certbot certonly --standalone --noninteractive --agree-tos --email {{ wp_admin_email }} -d {{ wp_site_url }}" 
   args:
