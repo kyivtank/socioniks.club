@@ -5,6 +5,7 @@
   roles:
     - common
     - mariadb
+    - letsencrypt
     - apache
     - php
     - wordpress

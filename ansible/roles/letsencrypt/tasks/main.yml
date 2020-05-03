@@ -1,0 +1,14 @@
+---
+- name: Get Let's Encrypt Certificates
+  shell: "certbot certonly --standalone --noninteractive --agree-tos --email {{ wp_admin_email }} -d {{ wp_site_url }}" 
+  args:
+    creates: /etc/letsencrypt/live/{{ wp_site_url }}
+
+- name: Schedule SSL certificate renewal
+  cron:
+    name: SSL Cert Renewal
+    minute: 0
+    hour: 20
+    day: '*/10'
+    user: root
+    job: "/usr/bin/certbot renew"
