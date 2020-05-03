@@ -46,5 +46,7 @@
     - sysstat
     - mc
     - python3-pymysql
+    - certbot 
+    - python3-certbot-apache
     state: latest
     update_cache: yes

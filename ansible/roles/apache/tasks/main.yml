@@ -19,7 +19,7 @@
     dest: /etc/apache2/sites-available/000-default.conf
   notify: restart apache
 
-- name: Copy apache MPM configuration
+- name: Apache site configuration
   file:
     src: /etc/apache2/sites-available/000-default.conf 
     dest: /etc/apache2/sites-enabled/000-default.conf
@@ -34,6 +34,37 @@
 
 - name: Copy IP page index file
   template: src=index2.html dest=/var/www/html2/index.html
+
+- name: "disable Apache module: MPM Event"
+  apache2_module:
+    state: absent
+    name: mpm_event
+
+- name: "enable Apache module: MPM Prefork"
+  apache2_module:
+    state: present
+    name: mpm_prefork
+
+- name: "enable Apache module: SSL"
+  apache2_module:    
+    state: present
+    name: ssl
+
+- name: "enable Apache modules: PHP7.4"
+  apache2_module:
+    state: present
+    name: php7.4
+
+- name: "enable Apache modules: Rewrite"
+  apache2_module:
+    state: present
+    name: rewrite
+
+- name: "enable Apache modules: HTTP/2"
+  apache2_module:
+    state: present
+    name: http2
+
 
 - name: http service state
   service: name={{ wp_apache }} state=started enabled=yes
