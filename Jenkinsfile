@@ -24,7 +24,7 @@ pipeline {
                   sh "terraform apply -auto-approve"
                  }
                  sh 'aws ec2 wait instance-running --instance-ids `terraform output INSTANCE_ID`'
-                 sh 'terraform output PUBLIC_IP > terraform.ip"
+                 sh 'terraform output PUBLIC_IP > terraform.ip'
                 }
             }
         }
