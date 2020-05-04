@@ -8,7 +8,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
         AWS_DEFAULT_REGION = 'eu-central-1'
         AWS_DEFAULT_OUTPUT = 'table'
-        GD_DOMAIN = 'socioniks.club'
+        GODADDY_DOMAIN = 'socioniks.club'
 	GODADDY_API_KEY = credentials ('jenkins-godaddy-key')
         GODADDY_API_SECRET = credentials('jenkins-godaddy-secret')
         ANSIBLE_HOST_KEY_CHECKING = 'false'
@@ -21,9 +21,10 @@ pipeline {
                 dir("${env.WORKSPACE}/terraform") {
                  wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
                   sh "terraform init"
-                  sh "terraform apply -auto-approve|tee terraform.out"
+                  sh "terraform apply -auto-approve"
                  }
-		 sh 'aws ec2 describe-instances'
+                 sh 'aws ec2 wait instance-running --instance-ids `terraform output INSTANCE_ID`'
+                 sh 'terraform output PUBLIC_IP > terraform.ip"
                 }
             }
         }

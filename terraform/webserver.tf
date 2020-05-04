@@ -81,3 +81,7 @@ resource "aws_security_group" "sg_allow_ssh_web" {
 output "PUBLIC_IP" {
   value = aws_instance.web.public_ip
 }
+output "INSTANCE_ID" {
+  value = aws_instance.web.id
+}
+
